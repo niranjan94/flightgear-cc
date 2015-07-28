@@ -3,9 +3,11 @@ var terminal = null;
 var flag = false;
 var disconnect_flag = false;
 var isConnected = false;
+var roll = 0;
+var pitch = 0;
 function connectToSocket() {
     loading(true);
-    socket = new WebSocket("ws://localhost:8000/");
+    socket = new WebSocket("ws://localhost:8778/");
     socket.onopen = function(evt) { onOpen(evt) };
     socket.onclose = function(evt) { onClose(evt) };
     socket.onmessage = function(evt) { onMessage(evt) };
@@ -14,6 +16,7 @@ function connectToSocket() {
 
 function onOpen(evt) {
     loading(false);
+    bridgeConnectButton(false);
     terminal.resume();
     terminal.clear();
     flag = true;
@@ -21,6 +24,7 @@ function onOpen(evt) {
 }
 
 function onClose(evt) {
+    bridgeConnectButton(true);
     isConnected = false;
     loading(false);
     terminal.resume();
@@ -39,6 +43,7 @@ function onMessage(evt) {
 }
 
 function onError(evt) {
+    bridgeConnectButton(true);
     isConnected = false;
     terminal.resume();
     loading(false);
@@ -81,6 +86,10 @@ $(document).ready(function () {
                     terminal.pause();
                     connectToSocket();
                     break;
+                case "disconnect":
+                    terminal.pause();
+                    socket.close();
+                    break;
                 case "exit":
                     disconnect_flag = true;
                     send("exit");
@@ -91,7 +100,6 @@ $(document).ready(function () {
                     } else {
                         writeToConsole("error:Please connect to bridge first");
                     }
-
             }
 
         } else {
@@ -105,8 +113,60 @@ $(document).ready(function () {
         prompt: '# '});
     terminal.pause();
 
+    $("#flight-gear-controls").hide();
+    $("#flight-gear-parameter-controls").hide();
+    $("#bridge-connect-btn").click(function () {
+        $(this).disable();
+        if(isConnected){
+            terminal.exec("disconnect");
+        } else {
+            terminal.exec("reconnect");
+        }
 
+    }).disable();
 
+    $("#flight-gear-connect-btn").click(function () {
+        terminal.exec("connect");
+    });
+
+    $("#flight-gear-open-btn").click(function () {
+        terminal.exec("set_path:" + localStorage.getItem("flightgear_path"));
+        terminal.exec("start fg");
+    });
+
+    $("#single-parameter").submit(function (e) {
+        e.preventDefault();
+        terminal.exec($("select[name=parameter]").val());
+    });
+
+    $("#start-log-btn").click(function () {
+        var csv = $('.parameters-checkbox:checked').map(function() {return this.value;}).get().join(',');
+        var timeInterval = $("#logging-interval").val();
+        terminal.exec("log:"+timeInterval+":"+csv);
+        loggingButton(false);
+    });
+
+    var $setPathModal = $('#flightgear-path-modal');
+
+    $setPathModal.modal({
+        backdrop : "static",
+        keyboard: "false"
+    });
+
+    if(localStorage.getItem("flightgear_path") == null || localStorage.getItem("flightgear_path") == ""){
+        $setPathModal.modal("show");
+    } else {
+        $setPathModal.modal("hide");
+    }
+
+    $("#fg-path-submit").click(function () {
+        localStorage.setItem("flightgear_path", $("#fg-path").val())
+    });
+
+    $("#stop-logging-btn").click(function(){
+        terminal.exec("stop_log");
+        loggingButton(true);
+    });
 });
 
 if (typeof String.prototype.startsWith != 'function') {

@@ -33,7 +33,7 @@
                     <li><a href="#">Debugging Panel</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="../navbar-fixed-top/">About</a></li>
+                    <li><a href="#">About</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help & Support <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -53,7 +53,7 @@
 
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <h4 style="display: inline">Console </h4><div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div><br>
             <div id="console" style="margin-top: 12px">
 
@@ -61,7 +61,76 @@
         </div>
         <div class="col-md-6">
             <h4 style="display: inline">&nbsp;</h4><br>
-            <button class="btn btn-success" style="margin-top: 12px">Connect to bridge</button>
+            <h6 style="margin-top: 12px">Bridge Control:</h6>
+            <button id="bridge-connect-btn" class="btn btn-success" >Connect to bridge</button>
+            <div id="flight-gear-controls" style="margin-top: 25px">
+                <h6 style="">FlightGear Control:</h6>
+
+                <button id="flight-gear-connect-btn" class="btn btn-success" >Connect to FlightGear</button>
+                <button id="flight-gear-open-btn" class="btn btn-primary" >Open FlightGear</button>
+
+                <div id="flight-gear-parameter-controls" style="margin-top: 25px">
+                    <h6 style="">FlightGear Data Hook Controls:</h6>
+                    <form class="form form-inline" id="single-parameter">
+                        <label>
+                            <span style="font-size: 17px;">Parameter:</span>
+                            <select class="form-control" name="parameter">
+                                <option value="altitude">Altitude</option>
+                                <optgroup label="Orientation"></optgroup>
+                                <option value="roll">Roll</option>
+                                <option value="pitch">Pitch</option>
+                                <option value="yaw">Yaw</option>
+                                <option value="heading">Heading</option>
+                                <option value="alpha">Alpha</option>
+                                <option value="beta">Beta</option>
+                                <option value="path">Path</option>
+                                <option value="roll-rate">Roll Rate</option>
+                                <option value="pitch-rate">Pitch Rate</option>
+                                <option value="yaw-rate">Yaw Rate</option>
+                                <option value="side-slip">Side Slip</option>
+                                <option value="track">Track</option>
+                                <option value="p-body">P Body</option>
+                                <option value="q-body">Q Body</option>
+                                <option value="r-body">R Body</option>
+                                <optgroup label="Control Surfaces Deflection"></optgroup>
+                                <option value="aileron">Aileron</option>
+                                <option value="elevator">Elevator</option>
+                                <option value="rudder">Rudder</option>
+                                <option value="aileron-trim">Aileron Trim</option>
+                                <option value="elevator-trim">Elevator Trim</option>
+                                <option value="rudder-trim">Rudder Trim</option>
+                                <option value="flaps">Flaps</option>
+                                <optgroup label="Velocities"></optgroup>
+                                <option value="vertical-speed">Vertical Speed</option>
+                                <option value="airspeed">Airspeed (knots)</option>
+                                <option value="groundspeed">Ground speed (knots)</option>
+                                <option value="mach">Mach</option>
+                                <option value="glideslope">Glideslope</option>
+                                <optgroup label="Powerplant"></optgroup>
+                                <option value="rpm">RPM</option>
+                                <option value="prop-thrust">Propeller Thrust</option>
+                                <option value="thrust">Thrust</option>
+                                <option value="torque">Torque (ft/lb)</option>
+                                <option value="fuel-consumed">Fuel Consumed</option>
+                                <option value="gross-weight">Gross Weight</option>
+                            </select>
+                        </label>
+                        <button type="submit" class="btn btn-default">Get Value</button>
+                    </form>
+
+                    <div id="flight-gear-logging-controls" style="margin-top: 25px">
+                        <h6 style="">FlightGear Data Logging:</h6>
+                        <button type="button" class="btn btn-warning" id="logging-select-btn" data-toggle="modal" data-target="#logging-modal">Select parameters to log</button>
+                        <button type="button" class="btn btn-danger hidden" id="stop-logging-btn">Stop Parameter Logging</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-3" style="padding-top: 50px; text-align: center;display:none" >
+            <canvas width="150" height="150" id="canvas"></canvas>
+            <div id="top"></div>
+
         </div>
     </div>
 
@@ -73,11 +142,236 @@
     </div>
 </footer>
 
+<div class="modal fade" id="logging-modal" tabindex="-1" role="dialog" aria-labelledby="logging-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Select parameters to log <small>All values are in FPS system</small></h4>
+            </div>
+            <div class="modal-body">
+                <form id="parameter-logging-form">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="altitude"> Altitude
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="roll"> Roll
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="pitch"> Pitch
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="yaw"> Yaw
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="heading"> Heading
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="alpha" checked> Alpha
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="beta"> Beta
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="path"> Path
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="roll-rate"> Roll Rate
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="pitch-rate"> Pitch Rate
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="yaw-rate"> Yaw Rate
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="side-slip"> Side Slip
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="track"> Track
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="p-body"> P Body
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="q-body"> Q Body
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="r-body"> R Body
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="aileron"> Aileron
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="elevator"> Elevator
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="rudder"> Rudder
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="aileron-trim"> Aileron Trim
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="elevator-trim"> Elevator Trim
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="rudder-trim"> Rudder Trim
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="flaps"> Flaps
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="vertical-speed"> Vertical Speed
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="airspeed"> Airspeed (knots)
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="groundspeed"> Ground Speed (knots)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="mach"> Mach
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="glideslope"> Glideslope
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="rpm"> RPM
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="prop-thrust"> Propeller Thrust
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="thrust"> Thrust
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="torque"> Torque (ft/lb)
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="fuel-consumed"> Fuel Consumed
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="gross-weight"> Gross Weight
+                                </label>
+                            </div>
+                            <strong>Logging interval:</strong><br>
+                            <div class="input-group">
+                                <input type="number" class="form-control" placeholder="5" id="logging-interval" value="5" aria-describedby="unit-addon" required>
+                                <span class="input-group-addon" id="unit-addon">seconds</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="start-log-btn" data-dismiss="modal">Start Logging</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="flightgear-path-modal" tabindex="-1" role="dialog" aria-labelledby="flightgear-path-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Set Path to FlightGear Simulator</h4>
+            </div>
+            <div class="modal-body" style="padding-top:0">
+                <span class="text-muted">(Do not add a slash at the end)</span>
+                <form>
+                    <input type="text" class="col-md-12" id="fg-path" name="fg-path" placeholder="C:\Program Files\FlightGear 3.4.0" value="C:\Program Files\FlightGear 3.4.0" required>
+                </form>
+                <br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="fg-path-submit">Set Path</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="assets/js/jquery-1.11.3.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/jquery.mousewheel.min.js"></script>
 <script src="assets/js/jquery.terminal.min.js"></script>
-<script src="assets/js/async.min.js"></script>
+<script src="assets/js/helpers.js"></script>
+<script src="assets/js/interface_modifiers.js"></script>
 <script src="assets/js/app.js"></script>
 
 </body>
