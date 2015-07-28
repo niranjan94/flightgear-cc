@@ -1,4 +1,5 @@
 from telnetlib import Telnet
+from telnetlib import IAC, NOP
 import sys
 import socket
 import re
@@ -14,6 +15,7 @@ class FGTelnet(Telnet):
     def __init__(self, host, port):
         Telnet.__init__(self, host, port)
         self.prompt = []
+        self.sock.sendall(IAC + NOP)
         self.prompt.append(re.compile('/[^>]*> '))
         self.timeout = 5
         # Telnet.set_debuglevel(self,2)
