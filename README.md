@@ -1,7 +1,7 @@
 ## FlightGear Command Center ##
 
 > This project is still under development.<br>
-> Bugs and crashes are to expected.
+> Bugs and crashes are to be expected.
 
 A python + javascript interface for the FlightGear flight simulator. This was made due to the confusing nature of FlightGear's extensive PropertyTree, API and the lack of proper documentation.
 
@@ -18,7 +18,7 @@ This projects aims to give people with little to zero knowledge in programming ,
 
 If you have python 2.7 and are familiar with using it, you can just download/clone this repo and start playing.
 
-Else, you can download the standalone binary for Windows at:
+Else, you can download the standalone binary for Windows at:<br>
 [https://github.com/niranjan94/flightgear-cc/releases/latest](https://github.com/niranjan94/flightgear-cc/releases/latest)
 
 > Please read the **README.txt** file inside the release package before proceeding
