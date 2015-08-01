@@ -77,7 +77,6 @@ $(document).ready(function () {
     connectToSocket();
     terminal = $('#console').terminal(function(command, term) {
         if (command !== '') {
-            command = command.toLowerCase().trim();
             switch (command){
                 case "help":
                     terminal.echo("Help function will be added shortly");
@@ -126,7 +125,7 @@ $(document).ready(function () {
     }).disable();
 
     $("#flight-gear-connect-btn").click(function () {
-        terminal.exec("connect");
+        terminal.exec("connect fg");
     });
 
     $("#flight-gear-open-btn").click(function () {
