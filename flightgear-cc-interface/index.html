@@ -25,7 +25,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">FlightGear CC</a>
+                <a class="navbar-brand" href="#">FlightGear CC <small class="text-muted">v1.2</small></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -76,6 +76,7 @@
                             <span style="font-size: 17px;">Parameter:</span>
                             <select class="form-control" name="parameter">
                                 <option value="altitude">Altitude</option>
+                                <option value="odometer">Odometer</option>
                                 <optgroup label="Orientation"></optgroup>
                                 <option value="roll">Roll</option>
                                 <option value="pitch">Pitch</option>
@@ -112,7 +113,8 @@
                                 <option value="thrust">Thrust</option>
                                 <option value="torque">Torque (ft/lb)</option>
                                 <option value="fuel-consumed">Fuel Consumed</option>
-                                <option value="gross-weight">Gross Weight</option>
+                                <option value="weight">Weight</option>
+
                             </select>
                         </label>
                         <button type="submit" class="btn btn-default">Get Value</button>
@@ -143,16 +145,19 @@
 </footer>
 
 <div class="modal fade" id="logging-modal" tabindex="-1" role="dialog" aria-labelledby="logging-modal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="padding-bottom: 0;">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Select parameters to log <small>All values are in FPS system</small></h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding-top: 0; padding-bottom: 0;">
+                <div class="alert alert-warning" role="alert" style="margin-bottom: 10px;">
+                    <strong>Important Note: </strong> FlightGear can safely handle 30 requests per second. Choose the number of parameters and logging interval accordingly. (each parameter you choose is a separate request)
+                </div>
                 <form id="parameter-logging-form">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="altitude"> Altitude
@@ -219,7 +224,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
 
                             <div class="checkbox">
                                 <label>
@@ -287,7 +292,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
 
                             <div class="checkbox">
                                 <label>
@@ -326,21 +331,168 @@
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="gross-weight"> Gross Weight
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="weight"> Weight
                                 </label>
                             </div>
-                            <strong>Logging interval:</strong><br>
-                            <div class="input-group">
-                                <input type="number" class="form-control" placeholder="5" id="logging-interval" value="5" aria-describedby="unit-addon" required>
-                                <span class="input-group-addon" id="unit-addon">seconds</span>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CDo"> CDo
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CDDf"> CDDf
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CDwbh"> CDwbh
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CDDe"> CDDe
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CDbeta"> CDbeta
+                                </label>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CLwbh"> CLwbh
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CLDf"> CLDf
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CLDe"> CLDe
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CLadot"> CLadot
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CLq"> CLq
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="cl-squared"> cl-squared
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="kCDge"> kCDge
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="kCLge"> kCLge
+                                </label>
+                            </div>
+
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="u"> u
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="v"> v
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="w"> w
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="p"> p
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="q"> q
+                                </label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="r"> r
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="u-dot"> u dot
+                                </label>
+                            </div>
+
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="v-dot"> v dot
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="w-dot"> w dot
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="p-dot"> p dot
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="q-dot"> q dot
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="r-dot"> r dot
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="odometer"> Odometer
+                                </label>
                             </div>
                         </div>
+
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" id="start-log-btn" data-dismiss="modal">Start Logging</button>
+            <div class="modal-footer" style="padding-top: 0;">
+                <div class="row">
+                    <div class="col-md-6" style="text-align: left">
+                        <label style="display: inline; padding-right: 5px;"><strong>Logging interval:</strong></label>
+                        <input type="number" class="form-control" placeholder="5" style="width: 35px; display: inline" id="logging-interval" value="5" aria-describedby="unit-addon" required>
+                        <span style="padding-left:5px; display: inline">seconds</span>
+                    </div>
+                    <div class="col-md-6">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" id="start-log-btn" data-dismiss="modal">Start Logging</button>
+                    </div>
+                </div>
+
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
