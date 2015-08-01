@@ -6,6 +6,7 @@ setup(
     console = [{
             "script":"interface.py",
             "icon_resources": [(1, "FlightGearCC.ico")],
-            "dest_base":"FlightGearCC"
+            "dest_base":"FlightGearCC",
+            'uac_info': "requireAdministrator",
             }],
 )
