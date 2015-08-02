@@ -271,37 +271,51 @@ class SocketHandler(WebSocket):
             sys.exit()
 
         elif self.data.startswith("set_path:"):
-            input_cmd_str = self.data.replace("set_path:", "")
-            if input_cmd_str is not None:
-                if input_cmd_str != "":
-                    flightgear_path = input_cmd_str
-            os.remove(flightgear_path + "\\data\\Aircraft\\c172p\\splash.png")
-            shutil.copy("splash.png", flightgear_path + "\\data\\Aircraft\\c172p\\")
-            self.sendMessage(unicode("FlightGear path has been set."))
+            try:
+                input_cmd_str = self.data.replace("set_path:", "")
+                if input_cmd_str is not None:
+                    if input_cmd_str != "":
+                        flightgear_path = input_cmd_str
+                try:
+                    os.remove(flightgear_path + "\\data\\Aircraft\\c172p\\splash.png")
+                except Exception:
+                    pass
+
+                shutil.copy("splash.png", flightgear_path + "\\data\\Aircraft\\c172p\\")
+                self.sendMessage(unicode("FlightGear path has been set."))
+            except Exception as err:
+                print type(err)
+                print err.args
+                print err
+                pass
 
         elif self.data == "start fg":
             # command = '"' + flightgear_path + '\\bin\\fgfs.exe" --fg-root="' + flightgear_path +'\data" --fg-scenery="' + flightgear_path + '\data\Scenery"; --aircraft=Cub --disable-random-objects --prop:/sim/rendering/random-vegetation=false --disable-ai-models --disable-ai-traffic --disable-real-weather-fetch --geometry=800x600 --bpp=32 --disable-terrasync --timeofday=noon --disable-fgcom --telnet=socket,out,30,localhost,5555,udp;'
-            subprocess.Popen([flightgear_path + '\\bin\\fgfs.exe',
-                              '--fg-root=' + flightgear_path + '\\data',
-                              '--fg-scenery=' + flightgear_path + '\\data\\Scenery',
-                              '--aircraft=c172p',
-                              '--disable-random-objects',
-                              '--prop:/sim/rendering/random-vegetation=false',
-                              '--disable-ai-models',
-                              '--disable-ai-traffic',
-                              '--disable-real-weather-fetch',
-                              '--geometry=800x600',  # DISPLAY RESOLUTION
-                              '--model-hz=120'  # FREQUENCY OF THE FDM
-                              '--bpp=32',
-                              '--wind=0@0',  # WIND SPEED AND DIRECTION
-                              '--fog-fastest',
-                              '--turbulence=0',
-                              '--disable-terrasync',
-                              '--timeofday=noon',
-                              '--disable-fgcom',
-                              '--telnet=socket,out,60,localhost,5555,udp'  # TELNET SERVER CONFIGURATION
-                              ])
-
+            try:
+                subprocess.Popen([flightgear_path + '\\bin\\fgfs.exe',
+                                  '--fg-root=' + flightgear_path + '\\data',
+                                  '--fg-scenery=' + flightgear_path + '\\data\\Scenery',
+                                  '--aircraft=c172p',
+                                  '--disable-random-objects',
+                                  '--prop:/sim/rendering/random-vegetation=false',
+                                  '--disable-ai-models',
+                                  '--disable-ai-traffic',
+                                  '--disable-real-weather-fetch',
+                                  '--geometry=800x600',  # DISPLAY RESOLUTION
+                                  '--model-hz=120'  # FREQUENCY OF THE FDM
+                                  '--bpp=32',
+                                  '--wind=0@0',  # WIND SPEED AND DIRECTION
+                                  '--fog-fastest',
+                                  '--turbulence=0',
+                                  '--disable-terrasync',
+                                  '--timeofday=noon',
+                                  '--disable-fgcom',
+                                  '--telnet=socket,out,60,localhost,5555,udp'  # TELNET SERVER CONFIGURATION
+                                  ])
+            except Exception as err:
+                print type(err)
+                print err.args
+                print err
             self.sendMessage(unicode("FlightGear has been started."))
         elif self.data.startswith("log:"):
             if fg_connected:
