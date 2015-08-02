@@ -149,7 +149,8 @@ $(document).ready(function () {
 
     $setPathModal.modal({
         backdrop : "static",
-        keyboard: "false"
+        keyboard: "false",
+        show: false
     });
 
     if(localStorage.getItem("flightgear_path") == null || localStorage.getItem("flightgear_path") == ""){
@@ -166,7 +167,33 @@ $(document).ready(function () {
         terminal.exec("stop_log");
         loggingButton(true);
     });
+
+
+    $(".parameters-checkbox").change(function () {
+        updateLoggingStatus();
+    });
+
+    $("#logging-interval").bind("propertychange change click keyup keypress input paste", function(event){
+        updateLoggingStatus();
+    });
+
 });
+
+function updateLoggingStatus(){
+    var $loggingStatus = $("#logging-status");
+
+    var param_count = parseFloat($('.parameters-checkbox:checked').length);
+    var interval = parseFloat($("#logging-interval").val());
+
+    var freq = param_count/interval;
+
+    if(freq<=30){
+        $loggingStatus.removeClass("text-danger").addClass("text-success").text("(logging will occur normally)")
+    } else {
+        $loggingStatus.addClass("text-danger").removeClass("text-success").text("(logging might be delayed)")
+    }
+
+}
 
 if (typeof String.prototype.startsWith != 'function') {
     // see below for better implementation!

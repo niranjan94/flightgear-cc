@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FlightGear Command Center</title>
 
+    <link rel="shortcut icon" href="/favicon.ico?v=1" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico?v=1" type="image/x-icon">
+
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/jquery.terminal.css" rel="stylesheet">
     <link href="assets/css/app.css" rel="stylesheet">
@@ -25,12 +28,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">FlightGear CC <small class="text-muted">v1.2</small></a>
+                <a class="navbar-brand" href="#">FlightGear CC <small class="text-muted">v1.3</small></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#">Dashboard</a></li>
                     <li><a href="#">Debugging Panel</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" onclick="$('#flightgear-path-modal').modal('show')">Change FlightGear Path</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">About</a></li>
@@ -482,12 +491,15 @@
             </div>
             <div class="modal-footer" style="padding-top: 0;">
                 <div class="row">
-                    <div class="col-md-6" style="text-align: left">
+                    <div class="col-md-8" style="text-align: left">
                         <label style="display: inline; padding-right: 5px;"><strong>Logging interval:</strong></label>
-                        <input type="number" class="form-control" placeholder="5" style="width: 35px; display: inline" id="logging-interval" value="5" aria-describedby="unit-addon" required>
+                        <input type="number" class="form-control" placeholder="5" style="width: 40px; display: inline" id="logging-interval" value="5" aria-describedby="unit-addon" required>
                         <span style="padding-left:5px; display: inline">seconds</span>
+                        <abbr title="Status will update as you select parameters and change the interval" style="margin-left: 100px;">
+                            <span id="logging-status" style="display: inline;" class="text-success">(logging will occur normally)</span>
+                        </abbr>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-success" id="start-log-btn" data-dismiss="modal">Start Logging</button>
                     </div>
