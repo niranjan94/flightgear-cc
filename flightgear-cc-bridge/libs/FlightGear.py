@@ -1,15 +1,12 @@
 from telnetlib import Telnet
 from telnetlib import IAC, NOP
-import sys
 import socket
 import re
-from string import split, join
-import time
+from string import split
 
 __all__ = ["FlightGear"]
 
 CRLF = '\r\n'
-
 
 class FGTelnet(Telnet):
     def __init__(self, host, port):
