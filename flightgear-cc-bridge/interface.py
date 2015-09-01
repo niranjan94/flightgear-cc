@@ -177,6 +177,13 @@ def handle_request(what):
     elif what == "kCLge":
         return get("fdm[0]/jsbsim[0]/aero[0]/function", "kCLge")
     #
+    # FUEL WEIGHT
+    #
+    elif what == "fuel-tank-1":
+        return unicode(fg["/fdm[0]/jsbsim[0]/propulsion[0]/tank[0]/" + "contents-lbs"])
+    elif what == "fuel-tank-2":
+        return unicode(fg["/fdm[0]/jsbsim[0]/propulsion[0]/tank[1]/" + "contents-lbs"])
+    #
     # DEFAULT - NOT FOUND
     #
     else:
@@ -187,6 +194,14 @@ def handle_log(interval, csv):
     global log_filename
 
     if fg_connected is not None and fg_connected:
+
+        #
+        # SET FUEL VALUE
+        #
+        fg["/fdm[0]/jsbsim[0]/propulsion[0]/tank[0]/" + "contents-lbs"] = 160
+        fg["/fdm[0]/jsbsim[0]/propulsion[0]/tank[1]/" + "contents-lbs"] = 160
+
+        ##
         log_filename = datetime.now().strftime('%Y-%m-%d %H-%M-%S') + ".csv"
         csv = "".join(csv.split())
         parameters = csv.split(",")

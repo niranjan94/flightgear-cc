@@ -28,7 +28,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">FlightGear CC <small class="text-muted">v1.3.1</small></a>
+                <a class="navbar-brand" href="#">FlightGear CC <small class="text-muted">v1.3.2</small></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -121,7 +121,6 @@
                                 <option value="prop-thrust">Propeller Thrust</option>
                                 <option value="thrust">Thrust</option>
                                 <option value="torque">Torque (ft/lb)</option>
-                                <option value="fuel-consumed">Fuel Consumed</option>
                                 <option value="weight">Weight</option>
 
                             </select>
@@ -335,14 +334,21 @@
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="fuel-consumed"> Fuel Consumed
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
                                     <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="weight"> Weight
                                 </label>
                             </div>
+							
+							<div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="fuel-tank-1"> Fuel weight (Tank 1)
+                                </label>
+                            </div>
+							<div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="fuel-tank-2"> Fuel weight (Tank 2)
+                                </label>
+                            </div>
+							
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CDo"> CDo
@@ -363,17 +369,17 @@
                                     <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CDDe"> CDDe
                                 </label>
                             </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CDbeta"> CDbeta
-                                </label>
-                            </div>
-
+                            
 
                         </div>
 
                         <div class="col-md-2">
                             <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CDbeta"> CDbeta
+                                </label>
+                            </div>
+							<div class="checkbox">
                                 <label>
                                     <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="CLwbh"> CLwbh
                                 </label>
@@ -414,7 +420,6 @@
                                 </label>
                             </div>
 
-
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="u"> u
@@ -435,14 +440,15 @@
                                     <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="p"> p
                                 </label>
                             </div>
-                            <div class="checkbox">
+                            
+
+                        </div>
+                        <div class="col-md-2">
+							<div class="checkbox">
                                 <label>
                                     <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="q"> q
                                 </label>
                             </div>
-
-                        </div>
-                        <div class="col-md-2">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="r"> r
@@ -484,6 +490,7 @@
                                     <input type="checkbox" name="parameters[]" class="parameters-checkbox" value="odometer"> Odometer
                                 </label>
                             </div>
+							
                         </div>
 
                     </div>
