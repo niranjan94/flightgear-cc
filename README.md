@@ -1,3 +1,5 @@
+[![StyleCI](https://styleci.io/repos/39573530/shield)](https://styleci.io/repos/39573530)
+
 ## FlightGear Command Center ##
 
 > This project is still under development.<br>
