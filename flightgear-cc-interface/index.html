@@ -33,17 +33,13 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#">Dashboard</a></li>
-                    <li><a href="#">Debugging Panel</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" onclick="$('#flightgear-path-modal').modal('show')">Change FlightGear Path</a></li>
-                        </ul>
-                    </li>
+<!--                     <li><a href="#">Debugging Panel</a></li>
+ -->                  
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">About</a></li>
-                    <li class="dropdown">
+<!--                     <li><a href="#">About</a></li> -->
+
+                <!--     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help & Support <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">Commands</a></li>
@@ -52,6 +48,12 @@
                             <li class="dropdown-header">Contact</li>
                             <li><a href="#">Developer</a></li>
                             <li><a href="#">IRC</a></li>
+                        </ul>
+                    </li> -->
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" onclick="$('#flightgear-path-modal').modal('show')">Change FlightGear Path</a></li>
                         </ul>
                     </li>
 
@@ -526,7 +528,7 @@
             <div class="modal-body" style="padding-top:0">
                 <span class="text-muted">(Do not add a slash at the end)</span>
                 <form>
-                    <input type="text" class="col-md-12" id="fg-path" name="fg-path" placeholder="C:\Program Files\FlightGear 3.4.0" value="C:\Program Files\FlightGear 3.4.0" required>
+                    <input type="text" class="col-md-12" id="fg-path" name="fg-path" placeholder="C:\Program Files\FlightGear 2017.2.1" value="C:\Program Files\FlightGear 2017.2.1" required>
                 </form>
                 <br>
             </div>

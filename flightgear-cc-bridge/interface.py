@@ -22,7 +22,7 @@ fg_connected = False
 child_process = None
 what_to_log = ""
 log_filename = "log.csv"
-flightgear_path = "C:\Program Files\FlightGear 3.4.0"
+flightgear_path = "C:\Program Files\FlightGear 2017.2.1"
 cancel_logger_instance = None
 
 # orientation = fg['/orientation[0]/alpha-deg']
