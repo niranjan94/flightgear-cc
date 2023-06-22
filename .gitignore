@@ -3,8 +3,8 @@
 build
 debug
 tmp
-ui
 dist
 logs
 *.csv
 flightgear-cc-bridge/splash.png
+releases/

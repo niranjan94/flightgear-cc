@@ -7,7 +7,7 @@ var roll = 0;
 var pitch = 0;
 function connectToSocket() {
     loading(true);
-    socket = new WebSocket("ws://localhost:8778/");
+    socket = new WebSocket("ws://" + window.location.host + "/api/v1/websocket");
     socket.onopen = function(evt) { onOpen(evt) };
     socket.onclose = function(evt) { onClose(evt) };
     socket.onmessage = function(evt) { onMessage(evt) };
@@ -146,6 +146,7 @@ $(document).ready(function () {
     });
 
     var $setPathModal = $('#flightgear-path-modal');
+    var $fgPath = $("#fg-path");
 
     $setPathModal.modal({
         backdrop : "static",
@@ -155,12 +156,19 @@ $(document).ready(function () {
 
     if(localStorage.getItem("flightgear_path") == null || localStorage.getItem("flightgear_path") == ""){
         $setPathModal.modal("show");
+        $fgPath.val('');
+        fetch("/api/v1/flightgear-path").then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            $fgPath.val(data.path);
+        })
     } else {
         $setPathModal.modal("hide");
+        $fgPath.val(localStorage.getItem("flightgear_path"));
     }
 
     $("#fg-path-submit").click(function () {
-        localStorage.setItem("flightgear_path", $("#fg-path").val())
+        localStorage.setItem("flightgear_path", $fgPath.val())
     });
 
     $("#stop-logging-btn").click(function(){
