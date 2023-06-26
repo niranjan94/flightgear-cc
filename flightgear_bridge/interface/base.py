@@ -95,6 +95,7 @@ special_cases = {
 
 
 def resolve_property_path(name: str) -> str:
+    """Resolve a property name to a property path."""
     if name in property_dict:
         parent_path, property_name = property_dict[name]
         return f"/{parent_path}[0]/{property_name}"
@@ -133,6 +134,8 @@ def parse_raw_value(raw_value: str) -> Union[float, int, str, None]:
 
 
 class BaseInterface(ABC):
+    """Base interface for property tree access."""
+
     async def get_property(
         self, name: str, raw: bool = False
     ) -> Union[float, int, str, None]:

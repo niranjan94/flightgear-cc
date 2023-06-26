@@ -27,7 +27,9 @@ class EndpointFilter(logging.Filter):
 logging.getLogger("uvicorn.access").addFilter(EndpointFilter())
 
 
-def create_app(root_dir: str):
+def create_app(root_dir: str) -> FastAPI:
+    """Create the FastAPI app."""
+
     app = FastAPI(
         middleware=[
             Middleware(
@@ -41,7 +43,6 @@ def create_app(root_dir: str):
     )
 
     app.include_router(api.router, prefix=PREFIX)
-
     app.mount(
         "/dashboard",
         StaticFiles(
@@ -64,6 +65,7 @@ def create_app(root_dir: str):
 
     @app.get("/")
     def redirect_to_dashboard():
+        """Redirect to the dashboard."""
         return RedirectResponse(url="/dashboard")
 
     @app.get(HEALTHCHECK_ENDPOINT)

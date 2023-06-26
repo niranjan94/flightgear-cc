@@ -1,4 +1,3 @@
-import asyncio
 from typing import Optional
 
 import telnetlib3
@@ -84,22 +83,3 @@ class TelnetInterface(BaseInterface):
         reader, writer = await telnetlib3.open_connection(host, port)
         logger.info(f"Telnet connection established to {host}:{port}")
         return TelnetInterface(reader, writer)
-
-
-def _main_test():
-    """Test the TelnetInterface."""
-
-    async def use_interface(int: TelnetInterface):
-        await int._send_command("get /orientation[0]/heading-deg")
-
-        print(await int._get_response())
-
-    loop = asyncio.get_event_loop()
-
-    interface = loop.run_until_complete(TelnetInterface.connect("127.0.0.1", 5555))
-    loop.create_task(use_interface(interface))
-    loop.run_until_complete(interface.await_closure())
-
-
-if __name__ == "__main__":
-    _main_test()

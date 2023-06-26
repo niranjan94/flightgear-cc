@@ -52,6 +52,7 @@ def get_flightgear_path():
 
 
 async def pipe_stream_to_logger(stream: asyncio.StreamReader):
+    """Pipes a stream to the logger."""
     async for line in stream:  # type: bytes
         stripped_line = ansi_escape.sub(
             "", str(line.decode("utf-8")).encode("ascii", "ignore").decode()
@@ -61,6 +62,8 @@ async def pipe_stream_to_logger(stream: asyncio.StreamReader):
 
 
 class Controller:
+    """Singleton class that manages the FlightGear process and telnet interface."""
+
     fg_process: Optional[asyncio.subprocess.Process]
     fg_interface: Optional[TelnetInterface]
     fg_path: Optional[str]
@@ -68,6 +71,7 @@ class Controller:
     logger_task: Optional[asyncio.Task]
 
     def __init__(self):
+        """Initializes the controller."""
         self.fg_process = None
         self.fg_interface = None
         self.fg_path = get_flightgear_path()
@@ -75,6 +79,7 @@ class Controller:
         self.logger_task = None
 
     async def monitor_fg_process(self, process: asyncio.subprocess.Process):
+        """Monitors the FlightGear process and restarts it if it exits."""
         stdout_pipe = asyncio.create_task(pipe_stream_to_logger(process.stdout))
         stderr_pipe = asyncio.create_task(pipe_stream_to_logger(process.stderr))
 
@@ -90,9 +95,11 @@ class Controller:
         self.fg_interface = None
 
     async def set_fg_path(self, fg_path: str):
+        """Sets the path to the FlightGear executable."""
         self.fg_path = fg_path
 
     async def start_fg_process(self):
+        """Starts the FlightGear process."""
         if self.fg_path is None:
             raise Exception("FlightGear path not set")
 
@@ -110,6 +117,7 @@ class Controller:
         asyncio.create_task(self.monitor_fg_process(self.fg_process))
 
     async def connect_fg(self):
+        """Connects to the FlightGear telnet interface."""
         await self.disconnect_fg()
         self.fg_interface = await TelnetInterface.connect(
             config.FLIGHT_GEAR_TELNET_HOST, config.FLIGHT_GEAR_TELNET_PORT
@@ -117,16 +125,19 @@ class Controller:
         self.fg_connected = True
 
     async def disconnect_fg(self):
+        """Disconnects from the FlightGear telnet interface."""
         if self.fg_interface is not None:
             await self.fg_interface.close()
             self.fg_interface = None
 
     async def get_property_value(self, name: str):
+        """Gets the value of a FlightGear property."""
         if self.fg_interface is None:
             raise Exception("FlightGear not connected")
         return await self.fg_interface.get_property(name)
 
     async def exit(self):
+        """Exits the FlightGear process."""
         await self.disconnect_fg()
         await self.stop_logger()
         if self.fg_process is not None:
@@ -135,6 +146,7 @@ class Controller:
         exit(0)
 
     async def start_logger(self, interval: float, properties: List[str]) -> str:
+        """Starts the logger."""
         await self.stop_logger()
         if self.fg_interface is None:
             raise Exception("FlightGear not connected")
@@ -147,19 +159,15 @@ class Controller:
         return log_file_path
 
     async def stop_logger(self):
+        """Stops the logger."""
         if self.logger_task is not None:
             self.logger_task.cancel()
             self.logger_task = None
 
-    @staticmethod
-    def get_instance():
-        if not hasattr(Controller, "_instance"):
-            Controller._instance = Controller()
-        return Controller._instance
-
     async def _start_logger_worker(
         self, log_file_path: str, interval: float, properties: List[str]
     ):
+        """Worker function for the logger."""
         async with aiofiles.open(
             log_file_path, mode="w", encoding="utf-8", newline=""
         ) as afp:
@@ -173,9 +181,17 @@ class Controller:
                 await afp.flush()
                 await asyncio.sleep(interval)
 
+    @staticmethod
+    def get_instance():
+        """Gets the singleton instance of the controller."""
+        if not hasattr(Controller, "_instance"):
+            Controller._instance = Controller()
+        return Controller._instance
+
 
 @router.websocket("/websocket")
-async def read_users(websocket: WebSocket):
+async def handle_websocket_connection(websocket: WebSocket):
+    """Handles a websocket connection."""
     await websocket.accept()
     controller = Controller.get_instance()
     logger.info("Websocket connection established")
@@ -223,6 +239,7 @@ async def read_users(websocket: WebSocket):
 
 @router.get("/flightgear-path")
 def get_flightgear_path_hint():
+    """Gets the path to the FlightGear executable."""
     return {
         "path": get_flightgear_path(),
     }
