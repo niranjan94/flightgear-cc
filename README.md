@@ -68,7 +68,14 @@ If you're interested in contributing to this project, here are some ideas to get
 To suggest a new feature, please [open a new issue](https://github.com/niranjan94/flightgear-cc/issues/new), with the label **feature request**.
 
 
-## Open Source License ##
+### Resources
+
+1. [FlightGear Wiki](http://wiki.flightgear.org/Main_Page)
+2. [FastAPI](https://fastapi.tiangolo.com/)
+3. [Starlette](https://www.starlette.io/)
+4. [PyInstaller](https://www.pyinstaller.org/)
+
+### Open Source License ##
 
 Unless explicitly stated otherwise all files in this repository are licensed under the [Apache Software License 2.0](http://choosealicense.com/licenses/apache-2.0/). All projects must properly attribute [The Original Source](https://github.com/niranjan94/flightgear-cc).
     
